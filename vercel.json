@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".",
+  "devCommand": "python3 -m http.server 9000",
+  "installCommand": "npm install"
+}
