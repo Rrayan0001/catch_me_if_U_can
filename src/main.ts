@@ -62,6 +62,13 @@ class RunawayButton {
         
         this.state.attempts++;
         this.attemptsDisplay.textContent = this.state.attempts.toString();
+        
+        // Auto-reduce difficulty after 100 attempts
+        if (this.state.attempts === 100 && this.state.difficulty === 'hard') {
+            this.state.difficulty = 'medium';
+            this.showDifficultyChange('Medium mode activated! Keep trying!');
+        }
+        
         this.moveButton();
     }
 
@@ -128,6 +135,22 @@ class RunawayButton {
 
 
 
+    private showDifficultyChange(message: string): void {
+        const notification = document.createElement('div');
+        notification.className = 'difficulty-notification';
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
     private endGame(success: boolean): void {
         if (!this.state.isGameActive) return;
 
@@ -149,6 +172,7 @@ class RunawayButton {
         this.state.attempts = 0;
         this.state.startTime = null;
         this.state.isGameActive = false;
+        this.state.difficulty = 'hard';
         
         if (this.state.timerInterval) {
             clearInterval(this.state.timerInterval);
